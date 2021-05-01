@@ -20,6 +20,10 @@ a {
   color : #F05454;
 }
 
+.color-dark{
+  color : #12262F;
+}
+
 .text-shadow{
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
 }

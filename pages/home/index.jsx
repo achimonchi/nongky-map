@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import Link from "next/link"
 import Nav from "./../../components/Nav";
-import agent from "./../../utils/agent";
+import {getCurrentLocation} from "./../../actions/map"
 
 export default function Index(props){
     const [location, setLocation] = useState("");
+    const [permission, setPermission] = useState("")
     const lists = [
         {
             icon : "bi bi-tag color-primary fs-2",
@@ -74,39 +75,49 @@ export default function Index(props){
     useEffect(()=>{
         getLocation()
         console.log(props.data)
-    },[])
+    },[permission])
 
-    const getLocation=()=>{
-        if(navigator.geolocation){
-            console.log("OKE")
-            navigator.geolocation.getCurrentPosition(async(position)=>{
-                const coords = position.coords;
-                console.log(coords)
-                agent.post("/api/map", {
-                    lat:coords.latitude,
-                    lon : coords.longitude
-                })
-                .then((res)=>{
-                    setLocation(res.data.data.city+" : "+res.data.data.latitude+","+res.data.data.longitude)
-                    console.log(res.data.data)
-                })
-                    .catch((err)=>{
-                        console.log(err)
+    useEffect(()=>{
+        checkPermission()
+    },[permission]);
+
+    const checkPermission=async()=>{
+        const permission = await navigator.permissions.query({name:"geolocation"});
+        setPermission(permission.state);
+    }
+
+    const getLocation=async()=>{
+        
+        switch(permission){
+            case "granted":
+                if(navigator.geolocation){
+                    navigator.geolocation.getCurrentPosition(async(position)=>{
+                        const coords = position.coords;
+                        const data = await getCurrentLocation(coords);
+                        setLocation(data.city+" : "+data.latitude+" , "+data.longitude);
+                        console.log(data)
+                    }, function(err){console.log(err)}, {
+                        enableHighAccuracy: true,
+                        timeout: 5000,
+                        maximumAge: 0
                     })
-            }, function(err){console.log(err)}, {
-                enableHighAccuracy: true,
-                timeout: 5000,
-                maximumAge: 0
-            })
-        } else {
-            alert("HAU");
-            setLocation("Lokasi tidak terdeteksi !")
+                } else {
+                    setLocation("Lokasi tidak terdeteksi !")
+                }
+            break;
+            case "prompt" :
+                setLocation("Harap hidupkan GPS anda !")
+                break;
+            case "denied" :
+                setLocation("Harap hidupkan GPS anda !")
+                break;
+
         }
     }
 
     return <>
         <Nav/>
-        <Banner location={location}/>
+        <Banner permission={permission} location={location} setPermission={setPermission}/>
         <Category lists={lists}/>
         <HighlightPromo cafes={cafes}/>
         <Nearby cafes={cafes}/>
@@ -114,6 +125,15 @@ export default function Index(props){
 }
 
 const Banner=(props)=>{
+    const handleRevoke=async()=>{
+        alert("Harap aktifkan GPS dan Ubah Permission pada Location !")
+        // browser.permissions.remove(permissionToRemove).then(result => {
+        //     console.log(result);
+        //   });
+        // navigator.permissions.revoke({name:'geolocation'}).then(function(result) {
+        //     props.setPermission(result.state);
+        //   });
+    }
     return (
         <div className="row">
             <div className="col-12 p-0">
@@ -126,8 +146,13 @@ const Banner=(props)=>{
                         </div>
                         <div className="row mt-1">
                             <div className="col-12">
-                                <div className="text-white">
-                                    <i className="bi bi-geo"></i> {props.location}
+                                <div className="text-white font-xs">
+                                    <i className="bi bi-geo me-2"></i> 
+                                    {
+                                        props.permission !== "granted"
+                                            ? <span onClick={handleRevoke} className="bg-white color-dark p-1 px-2 rounded ">actifkan gps</span>
+                                            : props.location
+                                    }
                                 </div>
                             </div>
                         </div>
