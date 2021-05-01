@@ -1,0 +1,65 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #FAFAFA;
+  overflow-x: hidden;
+  font-family: 'Montserrat', sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.color-primary{
+  color : #F05454;
+}
+
+.text-shadow{
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.font-small{
+  font-size:1rem;
+}
+
+.font-xs{
+  font-size: .8rem;
+}
+
+.card-highlight{
+  min-width: 55%;
+  margin-right: 15px;
+}
+
+.image .overlay{
+  background: rgba(18, 38, 47, 0.5);
+  height: 100%;
+}
+
+.bg-primary-80{
+  background: rgba(240, 84, 84, 0.8) !important;
+}
+
+.bg-warning-80{
+  background: rgba(240, 213, 58, 0.8) !important;
+}
+
+@media (min-width: 576px) { 
+  .font-xs{
+    font-size:1rem;
+  }
+
+  .fs-6{
+    font-size:1.2rem !important;
+  }
+
+  .highlight .card .image {
+    min-height: 20vw !important;
+  }
+}
