@@ -73,25 +73,40 @@ export default function Index(props){
     ]
 
     useEffect(()=>{
-        getLocation()
-        console.log(props.data)
-    },[])
+        const localPermission = localStorage.getItem("permission")
+        setPermission(localPermission);
+    }, [])
 
     useEffect(()=>{
-        checkPermission()
-    },[permission]);
+        // checkPermission();
+    }, [])
+
+    useEffect(()=>{
+        getLocation()
+    },[permission])
 
     const checkPermission=async()=>{
-        const permission = await navigator.permissions.query({name:"geolocation"});
-        setPermission(permission.state);
+        if(navigator.geolocation){
+            const localPermission = localStorage.getItem("permission");
+            if(localPermission == "granted"){
+                setPermission( localPermission );
+                localStorage.setItem("permission", "granted");
+            } else {
+                navigator.geolocation.getCurrentPosition(async()=>{
+                    const permissions = await navigator.permissions.query({name:"geolocation"});
+    
+                    setPermission(permissions.state);
+                    localStorage.setItem("permission", permissions.state);
+                })
+            }
+        }
     }
 
     const getLocation=async()=>{
-        
-        if(navigator.geolocation){
+        if(navigator.geolocation && permission == "granted"){
             navigator.geolocation.getCurrentPosition(async(position)=>{
                 const coords = position.coords;
-                const data = await getCurrentLocation(coords);
+                const data = await getCurrentLocation(coords, permission);
                 setLocation(data.city+" : "+data.latitude+" , "+data.longitude);
                 console.log(data)
             }, function(err){console.log(err)}, {
@@ -101,13 +116,17 @@ export default function Index(props){
             })
         } else {
             setLocation("Lokasi tidak terdeteksi !");
-            setPermission("prompt");
         }
     }
 
     return <>
         <Nav/>
-        <Banner permission={permission} location={location} setPermission={setPermission}/>
+        <Banner 
+            permission={permission}
+            location={location} 
+            setPermission={setPermission}
+            checkPermission={checkPermission}
+        />
         <Category lists={lists}/>
         <HighlightPromo cafes={cafes}/>
         <Nearby cafes={cafes}/>
@@ -116,13 +135,7 @@ export default function Index(props){
 
 const Banner=(props)=>{
     const handleRevoke=async()=>{
-        alert("Harap aktifkan GPS dan Ubah Permission pada Location !")
-        // browser.permissions.remove(permissionToRemove).then(result => {
-        //     console.log(result);
-        //   });
-        // navigator.permissions.revoke({name:'geolocation'}).then(function(result) {
-        //     props.setPermission(result.state);
-        //   });
+        props.checkPermission();
     }
     return (
         <div className="row">
@@ -137,7 +150,7 @@ const Banner=(props)=>{
                         <div className="row mt-1">
                             <div className="col-12">
                                 <div className="text-white font-xs">
-                                    <i className="bi bi-geo me-2"></i> 
+                                    <i className="bi bi-geo-alt-fill me-2"></i> 
                                     {
                                         props.permission !== "granted"
                                             ? <span onClick={handleRevoke} className="bg-white color-dark p-1 px-2 rounded ">actifkan gps</span>
@@ -153,7 +166,9 @@ const Banner=(props)=>{
                                         <span className="input-group-text bg-white border-0" id="basic-addon1">
                                             <i className="bi bi-search color-primary"></i>
                                         </span>
-                                        <span className="form-control">
+                                        <span className="form-control" style={{
+                                            whiteSpace:"nowrap", overflowX:"hidden"
+                                        }}>
                                             Cari nama  tempat atau menu ...
                                         </span>
                                         {/* <input type="text" className="form-control border-0" placeholder="Cari nama  tempat atau menu ..." aria-label="Username" aria-describedby="basic-addon1"/> */}

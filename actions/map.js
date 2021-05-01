@@ -1,6 +1,6 @@
 import agent from "./../utils/agent";
 
-export const getCurrentLocation=(coords) => {
+export const getCurrentLocation=(coords, permission) => {
     return new Promise(async(resolve)=>{
         try{
             const latLon = {
@@ -8,7 +8,7 @@ export const getCurrentLocation=(coords) => {
                 lon : coords.longitude,
             }
             const stringCoords = JSON.stringify(latLon);
-            if(localStorage.getItem("coords") == stringCoords){
+            if(localStorage.getItem("coords") == stringCoords && localStorage.getItem("city")){
                 console.log("SAMA ...");
                 const jsonCoords = JSON.parse(localStorage.getItem("coords"));
                 const jsonCity = localStorage.getItem("city");

@@ -14,10 +14,12 @@ export default function Layout({children}){
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"/>
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" />
             </Head>
-            <div className="container">
+            <div className="container" id="layout">
                 <div className="row justify-content-center">
-                    <div className="col-md-8 col-lg-6 col-sm-10 col-12">
-                        {children}
+                    <div className="col-md-8 col-lg-6 col-sm-10 col-12" id="layoutRoot">
+                        <div id="layoutChildren">
+                            {children}
+                        </div>
                     </div>
                 </div>
             </div>
