@@ -87,7 +87,7 @@ export default function Index(props){
                     lon : coords.longitude
                 })
                 .then((res)=>{
-                    setLocation(res.data.data.city)
+                    setLocation(res.data.data.city+" : "+res.data.data.latitude+","+res.data.data.longitude)
                     console.log(res.data.data)
                 })
                     .catch((err)=>{
