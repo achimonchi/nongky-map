@@ -88,30 +88,20 @@ export default function Index(props){
 
     const getLocation=async()=>{
         
-        switch(permission){
-            case "granted":
-                if(navigator.geolocation){
-                    navigator.geolocation.getCurrentPosition(async(position)=>{
-                        const coords = position.coords;
-                        const data = await getCurrentLocation(coords);
-                        setLocation(data.city+" : "+data.latitude+" , "+data.longitude);
-                        console.log(data)
-                    }, function(err){console.log(err)}, {
-                        enableHighAccuracy: true,
-                        timeout: 5000,
-                        maximumAge: 0
-                    })
-                } else {
-                    setLocation("Lokasi tidak terdeteksi !")
-                }
-            break;
-            case "prompt" :
-                setLocation("Harap hidupkan GPS anda !")
-                break;
-            case "denied" :
-                setLocation("Harap hidupkan GPS anda !")
-                break;
-
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(async(position)=>{
+                const coords = position.coords;
+                const data = await getCurrentLocation(coords);
+                setLocation(data.city+" : "+data.latitude+" , "+data.longitude);
+                console.log(data)
+            }, function(err){console.log(err)}, {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            })
+        } else {
+            setLocation("Lokasi tidak terdeteksi !");
+            setPermission("prompt");
         }
     }
 
