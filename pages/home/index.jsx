@@ -75,7 +75,7 @@ export default function Index(props){
     useEffect(()=>{
         getLocation()
         console.log(props.data)
-    },[permission])
+    },[])
 
     useEffect(()=>{
         checkPermission()
