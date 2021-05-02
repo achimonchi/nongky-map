@@ -153,7 +153,7 @@ const Banner=(props)=>{
                                     <i className="bi bi-geo-alt-fill me-2"></i> 
                                     {
                                         props.permission !== "granted"
-                                            ? <span onClick={handleRevoke} className="bg-white color-dark p-1 px-2 rounded ">actifkan gps</span>
+                                            ? <span onClick={handleRevoke} className="bg-white color-dark p-1 px-2 rounded ">aktifkan gps</span>
                                             : props.location
                                     }
                                 </div>

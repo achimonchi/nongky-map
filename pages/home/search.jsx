@@ -1,6 +1,11 @@
 import {useState, useEffect} from "react"
+import React from "react"
+import dynamic from "next/dynamic"
+
 import NavPage from './../../components/NavPage'
 import CustomSelect from "./../../components/shareds/CustomSelect";
+import nextConfig from "./../../config/next.config";
+
 import {getProvinces, getCities} from "./../../actions/map";
 
 export default function Search(){
@@ -25,13 +30,14 @@ const InputSearch=()=>{
     useEffect(()=>{
         const localCity = localStorage.getItem("city");
         setCity(localCity)
-        console.log({localCity})
     },[])
 
     const handleSubmit=(e)=>{
         e.preventDefault();
         alert("Submitted!")
     }
+
+    // const [userLocation, setUserLocation] = useState({})
     
     return(
         <div className="row">
@@ -71,12 +77,13 @@ const InputSearch=()=>{
             <Modal 
                 isOpen={isOpen}
                 handleCloseModal={handleCloseModal}
+                setCityRoot={setCity}
             />
         </div>
     )
 }
 
-const Modal=({isOpen, handleCloseModal})=>{
+const Modal=({isOpen, handleCloseModal, setCityRoot})=>{
     const [optionsProvince, setOptionsProvince] = useState([]);
     const [optionsCity, setOptionsCity] = useState([]);
 
@@ -111,6 +118,12 @@ const Modal=({isOpen, handleCloseModal})=>{
     }
     function changeCity(val) {
         setCity(val);
+        setCityRoot(val.label)
+        localStorage.setItem("city", val.label)
+    }
+
+    function changeLocation(location){
+        console.log({location})
     }
 
     return(
@@ -137,6 +150,9 @@ const Modal=({isOpen, handleCloseModal})=>{
                             label="Pilih Kota"
                         />
                     </div>
+                    <div className="map-leaflet">
+                        <MapLeaflet changeLocation={changeLocation}  city={city}/>
+                    </div>
                 </div>
                 <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -146,4 +162,31 @@ const Modal=({isOpen, handleCloseModal})=>{
             </div>
         </div>
     )
+}
+
+const MapLeaflet = ({city, changeLocation}) => {
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${city.label}.json?access_token=${nextConfig.TOKEN_MAPBOX}`
+    const Map = dynamic(()=>import("../../components/shareds/MapComponent"),
+    {
+        loading: ()=>"Loading ...",
+        ssr: false,
+    })
+
+    const [locations, setLocations] = useState([]);
+    useEffect(()=>{
+        const fetchLocations = async() => {
+            await fetch(url)
+                .then((text)=>text.text())
+                .then((res)=>JSON.parse(res))
+                .then((json)=>{
+                    setLocations(json.features[0]);
+                })
+        }
+        fetchLocations();
+    }, [city])
+    if(city.value)
+        return <Map changeLocation={changeLocation} locations={locations} />
+    else
+        return <p>Pilih Kota terlebih dahulu</p>
+     
 }

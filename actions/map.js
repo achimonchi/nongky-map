@@ -42,9 +42,10 @@ export const getCurrentLocation=(coords, permission) => {
         } catch(err){
             console.log(err)
             resolve({
-                city : "Unknown",
+                city : "No data",
                 latitude : "0",
                 longitude : "0",
+                streetName : "No data"
             })
         }
     })
