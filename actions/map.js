@@ -30,12 +30,13 @@ export const getCurrentLocation=(coords, permission) => {
                 const data = res.data.data;
                 console.log({dataMap:res.data})
                 localStorage.setItem("city",data.city)
-                localStorage.setItem("streetName",data.streetName)
+                const streetName = data.streetName || "No Data";
+                localStorage.setItem("streetName",streetName)
                 resolve({
                     city : data.city,
                     latitude : data.latitude,
                     longitude : data.longitude,
-                    streetName : data.streetName
+                    streetName : streetName
                 })
             }
         } catch(err){

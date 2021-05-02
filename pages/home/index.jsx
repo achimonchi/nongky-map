@@ -107,7 +107,7 @@ export default function Index(props){
             navigator.geolocation.getCurrentPosition(async(position)=>{
                 const coords = position.coords;
                 const data = await getCurrentLocation(coords, permission);
-                setLocation(data.city+" : "+data.latitude+" , "+data.longitude+" | "+data.streetName);
+                setLocation(data.city+" | "+data.streetName);
                 console.log(data)
             }, function(err){console.log(err)}, {
                 enableHighAccuracy: true,

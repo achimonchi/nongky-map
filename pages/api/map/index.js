@@ -13,7 +13,7 @@ export default async (req,res)=>{
         case "POST" :
             try{
                 const options = {
-                    provider: "openstreetmap",
+                    provider: "here",
                     apiKey: nextConfig.default.TOKEN_MAP,
                     formatter:null
                 }
