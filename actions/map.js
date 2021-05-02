@@ -8,15 +8,17 @@ export const getCurrentLocation=(coords, permission) => {
                 lon : coords.longitude,
             }
             const stringCoords = JSON.stringify(latLon);
-            if(localStorage.getItem("coords") == stringCoords && localStorage.getItem("city")){
+            if(localStorage.getItem("coords") == stringCoords && localStorage.getItem("city") && localStorage.getItem("streetName")){
                 console.log("SAMA ...");
                 const jsonCoords = JSON.parse(localStorage.getItem("coords"));
                 const jsonCity = localStorage.getItem("city");
+                const jsonStreet = localStorage.getItem("streetName");
                 console.log(jsonCity)
                 resolve({
                     city : jsonCity,
                     latitude : jsonCoords.lat,
                     longitude : jsonCoords.lon,
+                    streetName : jsonStreet
                 })
             }
             else {
@@ -28,10 +30,12 @@ export const getCurrentLocation=(coords, permission) => {
                 const data = res.data.data;
                 console.log({dataMap:res.data})
                 localStorage.setItem("city",data.city)
+                localStorage.setItem("streetName",data.streetName)
                 resolve({
                     city : data.city,
                     latitude : data.latitude,
                     longitude : data.longitude,
+                    streetName : data.streetName
                 })
             }
         } catch(err){

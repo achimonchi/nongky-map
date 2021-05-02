@@ -22,7 +22,6 @@ export default async (req,res)=>{
                 const {lat, lon} = req.body;
     
                 const data = await geocoder.reverse({lat,lon});
-                console.log({dataPost:data})
                 res.status(200).json({data:data[0]});
             } catch(err){
                 console.log(err)
