@@ -9,11 +9,11 @@ export const getCurrentLocation=(coords, permission) => {
             }
             const stringCoords = JSON.stringify(latLon);
             if(localStorage.getItem("coords") == stringCoords && localStorage.getItem("city") && localStorage.getItem("streetName")){
-                console.log("SAMA ...");
+                // console.log("SAMA ...");
                 const jsonCoords = JSON.parse(localStorage.getItem("coords"));
                 const jsonCity = localStorage.getItem("city");
                 const jsonStreet = localStorage.getItem("streetName");
-                console.log(jsonCity)
+                // console.log(jsonCity)
                 resolve({
                     city : jsonCity,
                     latitude : jsonCoords.lat,
@@ -28,7 +28,7 @@ export const getCurrentLocation=(coords, permission) => {
                     lon : coords.longitude
                 });
                 const data = res.data.data;
-                console.log({dataMap:res.data})
+                // console.log({dataMap:res.data})
                 localStorage.setItem("city",data.city)
                 const streetName = data.streetName || "No Data";
                 localStorage.setItem("streetName",streetName)
@@ -55,7 +55,7 @@ export const getProvinces=()=>{
     return new Promise(async(resolve)=>{
         try{
             const provincesTemp = await wilayah.get("/daerahindonesia/provinsi");
-            console.log({provincesTemp})
+            // console.log({provincesTemp})
             const dataProvinces = provincesTemp.data.provinsi;
             const provinces = [];
             dataProvinces.map((prov)=>{
@@ -77,7 +77,7 @@ export const getCities=(id)=>{
     return new Promise(async(resolve)=>{
         try{
             const citiesTemp = await wilayah.get(`/daerahindonesia/kota?id_provinsi=${id}`);
-            console.log({citiesTemp})
+            // console.log({citiesTemp})
             const dataCities = citiesTemp.data.kota_kabupaten;
             const cities = [];
             dataCities.map((prov)=>{

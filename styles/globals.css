@@ -46,6 +46,10 @@ a {
   height: 100%;
 }
 
+.bg-primary{
+  background: rgba(240, 84, 84, 1) !important;
+}
+
 .bg-primary-80{
   background: rgba(240, 84, 84, 0.8) !important;
 }

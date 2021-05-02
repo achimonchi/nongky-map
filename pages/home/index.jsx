@@ -108,7 +108,7 @@ export default function Index(props){
                 const coords = position.coords;
                 const data = await getCurrentLocation(coords, permission);
                 setLocation(data.city+" | "+data.streetName);
-                console.log(data)
+                // console.log(data)
             }, function(err){console.log(err)}, {
                 enableHighAccuracy: true,
                 timeout: 5000,
