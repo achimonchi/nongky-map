@@ -13,7 +13,9 @@ export default function NavPage(props) {
                         </Link>
                         <span className="fs-6 fw-bold ms-2">Pencarian</span>
                     </div>
-                    <i className="bi bi-person-circle fs-2"></i>
+                    <Link href="/auth/login">
+                        <i className="bi bi-person-circle fs-2"></i>
+                    </Link>
                 </div>
             </div>
         </div>

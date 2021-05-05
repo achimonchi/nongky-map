@@ -3,7 +3,7 @@ import Link from "next/link"
 import Nav from "./../../components/Nav";
 import {getCurrentLocation} from "./../../actions/map"
 
-export default function Index(props){
+export default function Index(){
     const [location, setLocation] = useState("");
     const [permission, setPermission] = useState("")
     const lists = [
