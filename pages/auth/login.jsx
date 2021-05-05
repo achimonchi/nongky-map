@@ -23,7 +23,7 @@ export default function Login(){
         <div className="row">
             <div className="col-12 p-0">
                 <div id="login" className="auth px-4 py-2">
-                    <div className="top">
+                    <div className="top cursor">
                         <Link href="/">
                             <div>
                                 <i className="bi bi-arrow-left fs-2"></i>
@@ -33,14 +33,14 @@ export default function Login(){
                     </div>
                     <div className="header">
                         <h1 className="fw-bold fs-3">Selamat Datang Kembali</h1>
-                        <p>Yuk eksplore berbagai tempat nongkrong di dekatmu</p>
+                        <p>Jelajahi berbagai tempat nongkrong menarik di sekitarmu</p>
                     </div>
                     <div className="content">
                         <div className="row">
                             <div className="col-12">
                                 <div className="d-grid gap-2">
                                     <button className="btn bg-white py-2 border">
-                                        <i class="bi bi-google me-3 color-primary"></i>
+                                        <i className="bi bi-google me-3 color-primary"></i>
                                         <span>Masuk dengan <b>Google</b></span>
                                     </button>
                                 </div>
@@ -48,23 +48,23 @@ export default function Login(){
                         </div>
                         <div className="row">
                             <div className="col-12">
-                                <div className="text-center mt-2 mb-2">
+                                <div className="text-center mt-2 mb-2 font-xs">
                                     Atau
                                 </div>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-12">
-                                <div class="input-group mb-3">
-                                    <input type="email" class="form-control border" placeholder="user@example.com"/>
-                                    <button class="input-group-text bg-white border" id="basic-addon2">
-                                        <i class="bi bi-envelope"></i>
+                                <div className="input-group mb-3">
+                                    <input type="email" className="form-control border" placeholder="user@example.com"/>
+                                    <button className="input-group-text bg-white border" id="basic-addon2">
+                                        <i className="bi bi-envelope"></i>
                                     </button>
                                 </div>
-                                <div class="input-group mb-3">
-                                    <input ref={passInput} type="password" class="form-control border" placeholder="password kamu"/>
-                                    <button onClick={displayPassword} class="input-group-text bg-white border" id="basic-addon2">
-                                        <i class="bi bi-lock" ref={iconLock}></i>
+                                <div className="input-group mb-3">
+                                    <input ref={passInput} type="password" className="form-control border" placeholder="password kamu"/>
+                                    <button onClick={displayPassword} className="input-group-text bg-white border" id="basic-addon2">
+                                        <i className="bi bi-lock" ref={iconLock}></i>
                                     </button>
                                 </div>
                                 <div className="d-grid gap-2">
@@ -82,9 +82,9 @@ export default function Login(){
                     </div>
                     <div></div>
                     <div></div>
-                    <div className="footer font-xs text-center mt-4">
-                        <Link href="/auth/register" className="mt-4">
-                            <div>Belum punya akun? <b>Daftar Sekarang</b></div>
+                    <div className="footer font-xs text-center mt-4 cursor">
+                        <Link href="/auth/register" className="mt-4 ">
+                            <span>Belum punya akun? <b>Daftar Sekarang</b></span>
                         </Link>
                     </div>
                 </div>

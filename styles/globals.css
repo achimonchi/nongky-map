@@ -84,6 +84,10 @@ a {
     min-height: 20vw !important;
   }
 
+  .cursor:hover{
+    cursor: pointer;
+  }
+
   #layoutRoot{
     background:white;
     /* box-shadow:0px 10px 20px -10px rgba(0,0,0,.5) */
