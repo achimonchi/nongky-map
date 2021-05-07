@@ -2,73 +2,29 @@ import React, {useState, useEffect} from 'react';
 import Link from "next/link"
 import Nav from "./../../components/Nav";
 import {getCurrentLocation} from "./../../actions/map"
+import { fetchAll } from '../../actions/cafes';
 
 export default function Index(){
     const [location, setLocation] = useState("");
-    const [permission, setPermission] = useState("")
+    const [permission, setPermission] = useState("");
+    const [cafes, setCafes] = useState([]);
+    const [cafesNearby, setCafesNearby] = useState([]);
+
     const lists = [
         {
             icon : "bi bi-tag color-primary fs-2",
             text : "Promo",
-            url : "",
+            url : "/quick/promo",
         },
         {
             icon : "bi bi-geo-alt fs-2",
             text : "Terdekat",
-            url : "",
+            url : "/quick/nearby",
         },
         {
             icon : "bi bi-cup-straw fs-2",
             text : "Menu",
-            url : "",
-        },
-    ]
-
-    const cafes = [
-        {
-            c_name : "Coffee A",
-            c_profile : "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80",
-            c_address : {
-                street : "Jl Garuda Gg Pelita No 15",
-                province : "Riau",
-                city : "Pekanbaru"
-            },
-        },
-        {
-            c_name : "Coffee B",
-            c_profile : "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80",
-            c_address : {
-                street : "Jl Garuda Gg Pelita No 15",
-                province : "Riau",
-                city : "Pekanbaru"
-            },
-        },
-        {
-            c_name : "Coffee C",
-            c_profile : "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80",
-            c_address : {
-                street : "Jl Garuda Gg Pelita No 15",
-                province : "Riau",
-                city : "Pekanbaru"
-            },
-        },
-        {
-            c_name : "Coffee D",
-            c_profile : "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80",
-            c_address : {
-                street : "Jl Garuda Gg Pelita No 15",
-                province : "Riau",
-                city : "Pekanbaru"
-            },
-        },
-        {
-            c_name : "Coffee E",
-            c_profile : "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1267&q=80",
-            c_address : {
-                street : "Jl Garuda Gg Pelita No 15",
-                province : "Riau",
-                city : "Pekanbaru"
-            },
+            url : "/quick/menu",
         },
     ]
 
@@ -78,12 +34,23 @@ export default function Index(){
     }, [])
 
     useEffect(()=>{
-        // checkPermission();
+        fetchAllCafes();
+        fetchAllCafesNearby();
     }, [])
 
     useEffect(()=>{
         getLocation()
     },[permission])
+
+    const fetchAllCafes=async()=>{
+        const data = await fetchAll();
+        setCafes(data.data);
+    }
+
+    const fetchAllCafesNearby=async()=>{
+        const data = await fetchAll();
+        setCafesNearby(data.data);
+    }
 
     const checkPermission=async()=>{
         if(navigator.geolocation){
@@ -129,7 +96,7 @@ export default function Index(){
         />
         <Category lists={lists}/>
         <HighlightPromo cafes={cafes}/>
-        <Nearby cafes={cafes}/>
+        <Nearby cafes={cafesNearby}/>
     </>
 }
 
@@ -196,11 +163,13 @@ const Category=(props)=>{
                             {
                                 lists.length > 0 
                                     ?   lists.map((list, key)=> (
-                                        <div className="col-4" key={key}>
-                                            <div className="d-flex flex-column align-items-center card p-2 justify-content-center" style={{height:"100%"}}>
-                                                <i className={list.icon}></i>
-                                                <span className="text-center item font-xs">{list.text}</span>
-                                            </div>
+                                        <div className="col" key={key}>
+                                            <Link href={list.url} >
+                                                <div className="d-flex flex-column align-items-center card p-2 justify-content-center cursor" style={{height:"100%"}}>
+                                                    <i className={list.icon}></i>
+                                                    <span className="text-center item font-xs">{list.text}</span>
+                                                </div>
+                                            </Link>
                                         </div>
                                     ))
                                     : "Loading ..."
